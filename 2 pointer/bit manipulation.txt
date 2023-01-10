@@ -1,0 +1,16 @@
+x = 1001011
+x<<2 = 100101100  = x* 2^Y
+x>>2 = 10010 = X/2^Y
+
+__builtin_popcount(n)
+__builtin_popcountll(n) // counts the number of 1 in n in O(1);
+__builtin_ctz(n)
+__builtin_ctzll(n) // count of trailing zeros
+__builtin_clz(n) // count of leading zeros
+
+Postion of 1st 1 in ll int = 63 - __builtin_clzll(n)
+
+how to multiply
+
+new val = (old val * multiplier + oldcarry) % base
+new carry = (old val * multiplier + oldcarry) / base
