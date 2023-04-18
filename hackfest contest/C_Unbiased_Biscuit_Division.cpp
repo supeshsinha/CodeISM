@@ -1,13 +1,14 @@
 #include<bits/stdc++.h>
-#define int long long
-#define vvi(name,r,c,d) vector<vector<int>> name(r,vector<int>(c,d))
 using namespace std;
 
 void solve(){
-
+    int n,a;
+    cin>>n>>a;
+    if(a==45) cout<<2<<endl;
+    else cout<<3<<endl;
 }
 
-int32_t main(){
+int main(){
     int t;
     cin>>t;
 
