@@ -1,20 +1,31 @@
 #include<bits/stdc++.h>
+#define int long long
+#define vvi(name,r,c,d) vector<vector<int>> name(r,vector<int>(c,d))
 using namespace std;
 
-int remainder(string a, int b){
-    int rem = 0;
-    string rem1 = "";
-    for(int i=0;i<a.length();i++){
-        rem1 = to_string(rem);
-        rem1 = rem1 + a[i];
-        rem = stoi(rem1);
-        rem = rem%b;
-    }
-    return rem;
+void solve(){
+	int n;
+	cin>>n;
+	vector<int> a(n);
+	int mina, maxa;
+	cin>> mina;
+	maxa = mina;
+	int temp;
+	for(int i=1; i<n; i++){
+		cin>>temp;
+		mina = min(mina, temp);
+		maxa = max(maxa, temp);
+	}
+	cout<<(mina+maxa)<<endl;
 }
 
-int main(){
-    cout<<remainder("9",4);
+int32_t main(){
+    int t;
+    cin>>t;
+
+    while(t--){
+        solve();
+    }
 
     return 0;
 }
