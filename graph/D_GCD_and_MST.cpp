@@ -3,84 +3,81 @@
 #define vvi(name,r,c,d) vector<vector<int>> name(r,vector<int>(c,d))
 using namespace std;
 
-
-vector<int> par,ranks;
-int ans = 0;
-int c =0;
+vector<int> par;
+vector<int> rnk;
 
 void make_set(int n){
-    for(int i=1;i<=n;i++){
-        par[i] = i;
-        ranks[i] = 1;
-    }
+    rnk.assign(n+1,1);
+    par.resize(n+1);
+    for(int i=0; i<=n; i++) par[i] = i;
 }
 
 int find_set(int x){
     if(par[x] == x) return x;
-
     par[x] = find_set(par[x]);
     return par[x];
 }
 
-void union_set(int a, int b, int weight){
+void union_set(int a, int b){
     int x = find_set(a);
     int y = find_set(b);
+
     if(x==y) return;
 
-    if(ranks[x]>ranks[y]){
+    if(rnk[x] > rnk[y]){
         par[y] = x;
-        ranks[x] += ranks[y];
+        rnk[x] += rnk[y];
     }
     else{
         par[x] = y;
-        ranks[y] += ranks[x];
+        rnk[y] += rnk[x];
     }
-    ans += weight;
-    c++;
 }
 
 
+
 void solve(){
-    int n,p;
+    int n, p;
     cin>>n>>p;
-    par.resize(n+1);
-    ranks.resize(n+1);
-    ans = 0;
-    c=0;
+
     make_set(n);
-    vector<int> a(n+1);
-    vector<pair<int,int>> as;
-    for(int i=1; i<=n; i++){
+    vector<int> a(n);
+    vector<pair<int,int>> b(n);
+    for(int i=0; i<n; i++){
         cin>>a[i];
-        as.push_back({a[i],i});
-    } 
-
-    sort(as.begin(),as.end());
-
-    for(int i = 0; as[i].first<p && i<n; i++){
-        int ind = as[i].second;
-        int j = ind + 1;
-        while(j<=n && a[j]%a[ind] == 0){
-            if(find_set(j) == find_set(ind)) break;
-            union_set(j,ind,a[ind]);
-            j++;
-        }
-        j = ind - 1;
-        while(j>0 && a[j]%a[ind] == 0){
-            if(find_set(j) == find_set(ind)) break;
-            union_set(j,ind,a[ind]);
-            j--;
-        }
-        if(c == n-1) break;
+        b[i] = {a[i], i};
     }
-    ans += (n-1 -c)*p;
 
+    vector<bool> vis(n,0);
+    sort(b.begin(), b.end());
+
+    int ans = 0;
+    int comp = n;
+
+    for(int i=0; i<n && b[i].first<p; i++){
+        int u = b[i].first;
+        int ind = b[i].second;
+        for(int k = b[i].second+1; k<n && a[k]%u == 0; k++){
+            if(find_set(ind) != find_set(k)){
+                union_set(ind, k);
+                ans += u;
+                comp--;
+            }
+            if(vis[k]) break;
+            vis[k] = 1;
+        }
+        for(int k = b[i].second-1; k>=0 && a[k]%u == 0; k--){
+            if(find_set(ind) != find_set(k)){
+                union_set(ind, k);
+                ans += u;
+                comp--;
+            }
+            if(vis[k]) break;
+            vis[k] = 1;
+        }
+    }
+    ans += ((comp-1)*p);
     cout<<ans<<endl;
-
-
-
-
-
 }
 
 int32_t main(){
